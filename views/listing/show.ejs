@@ -1,0 +1,41 @@
+<% layout("layouts/boilerplate") %>
+<div class="col">
+<div class="show">
+<body>
+    <br>
+      <h2> All details of the Property </h2> 
+    
+      <div class="card" style="width: 18rem;">
+  <img src="<%=listing.image%>" class="card-img-top" alt="image">
+  <div class="card-body">
+    <h5 class="card-title" style="display: flex; justify-content: center; align-items: center;">All Details</h5>
+    <p class="card-text">
+         
+   <li>  User ID: <%=listing.id%></li>
+    <li> Title: <%=listing.title%></li>
+    <li> Image: <%=listing.image%></li>
+    <li>Country: <%=listing.price%></li>
+    <li>Location: <%=listing.location%></li>
+    <li>Country: <%=listing.country%></li>
+    
+    </p>
+   
+  </div>
+</div>
+<div style="display: flex; justify-content: center; align-items: center;">
+    <div>
+    <form method="GET" action="/listings/edit/<%=listing.id%>">
+        <button style="margin-right: 3px;" class="A"> Edit form </butoon>
+    </form>
+    </div> 
+    <div>
+    <form method="POST" action="/listings/<%=listing.id%>/del?_method=DELETE">
+        <button class="B">Delete</button>
+
+    </form>
+    </div>
+    </div>
+</body>
+</div>
+</div>
+</html>

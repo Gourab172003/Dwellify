@@ -1,0 +1,164 @@
+body{
+     font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: auto;
+    body {
+    overflow: hidden; 
+}
+ 
+   
+}
+.container{
+    flex:1;
+    height:100vh;
+    width:100h;
+}
+
+
+.navbar{
+    background-color: white;
+}
+
+.fa-compass{
+color: #fe424d;
+font-size: 2rem;
+}
+
+.nav-link{
+    color: black !important;
+    font-family: "Vend Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 1.2rem !important;
+}
+.f-info-links a{
+    text-decoration: none;
+    color:#222222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+
+}
+
+.f-info-links{
+    width:100%;
+    margin-right: 2rem;
+    text-align:center;
+}
+
+.f-info-socials{
+    width:100%;
+    font-size: 1.5rem;
+}
+.f-info{
+    text-align:center;
+    display:flex;
+    height:8rem;
+    background-color: #ebebeb;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    width:auto;
+}
+
+
+/* cards */
+.card{
+border: none !important;
+margin-top: 2rem;
+
+
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+.card-text p{
+    font-weight: 400;
+      text-decoration: none !important;
+    
+}
+
+.listing-link{
+    text-decoration: none;
+}
+
+.btn-save {
+   
+   
+   display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.btn{
+    background-color: #fe424d;
+     border:none !important;
+     width:6rem;
+}
+.heading{
+    color: #fe424d !important;
+}
+
+.ediBtn{
+    display:flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.editbtn{
+    background-color: #fe424d !important;
+    border:none;
+    border-radius: 0.3rem;
+    color: white;
+    width:5rem;
+}
+
+.editinfo{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userID{
+    margin-right: 1rem;
+    
+    color: red;
+}
+
+.id{
+    font-family: "Tinos", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.B{
+    background-color:#fe424d !important;
+    border: none;
+    border-radius: 1.2rem;
+    height:2rem;
+    width:5rem;
+    font-size:small;
+    color:white;
+}
+
+.A{
+     background-color:#fe424d !important;
+    border: none;
+    border-radius: 1.2rem;
+    height:2rem;
+    width:5rem;
+    font-size: small;
+    color:white;
+}
+

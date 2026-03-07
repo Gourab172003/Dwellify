@@ -162,3 +162,70 @@ margin-top: 2rem;
     color:white;
 }
 
+
+
+/* Show Page */
+.show-card {
+  border: none !important;
+  margin-top: 1rem;
+}
+
+.show-img {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  height: 400px !important;
+  object-fit: cover !important;
+}
+
+.show-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.show-desc {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+.show-price {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.show-meta {
+  font-size: 0.95rem;
+  color: #222;
+  margin-bottom: 0.1rem;
+}
+
+.show-btns {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-edit {
+  background-color: #fe424d;
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-edit:hover { background-color: #e03540; }
+.btn-delete:hover { background-color: #444; }

@@ -46,12 +46,12 @@
 <div class="container">
   <div class="row justify-content-center mt-4">
     <div class="col-12 col-md-8">
-      <h3>Listing Details</h3>
+      <h3 class="show-title"><%=listing.title%></h3>
       
       <div class="card show-card">
         <img src="<%=listing.image%>" class="card-img-top show-img" alt="listing image">
         <div class="card-body px-0 pt-3">
-          <h5 class="show-title"><%=listing.title%></h5>
+          
           <p class="show-desc"><%=listing.description || "A wonderful property available for you."  %></p>
           <p class="show-price">&#8377; <%=listing.price%></p>
           <p class="show-meta"><%=listing.location%></p>
@@ -61,10 +61,26 @@
 
       <div class="show-btns mt-3 mb-5">
         <form method="GET" action="/listings/edit/<%=listing.id%>" style="display:inline;">
-          <button class="btn-edit">Edit</button>
+          <button class="btn btn-outline-dark">Edit</button>
         </form>
         <form method="POST" action="/listings/<%=listing.id%>/del?_method=DELETE" style="display:inline;">
-          <button class="btn-delete">Delete</button>
+          <button class="btn btn-outline-dark">Delete</button>
+        </form>
+      </div>
+
+      <div>
+        <h4> Leave a Review </h4>
+        <form class="mb-2 mt-3" >
+            <div>
+                <label for="rating"> Rating</label>
+                <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+            </div> 
+            <div >
+                <label for="comment" class="form-label" > Comment</label>
+                <textarea name="review[comment]" col="30" rows="5" class="form-control"></textarea>
+                <br>
+            </div>
+            <button class="btn btn-outline-dark">Submit</button>
         </form>
       </div>
 

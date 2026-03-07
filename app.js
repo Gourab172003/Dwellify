@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use(express.json());
 const ExpressError=require("./utils/expressError.js");
 const {listingSchema}= require("./schema.js");
+const Review= require("./models/review.js");
 
 main()
 .then(()=>{

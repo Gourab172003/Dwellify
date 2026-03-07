@@ -8,6 +8,7 @@ const methodOverride= require("method-override");
 app.use(methodOverride('_method'));
 const ejsMate=require("ejs-Mate");
 app.engine("ejs", ejsMate)
+const joi= require('joi');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname,"views"));
@@ -41,6 +42,19 @@ app.get("/", (req,res)=>{
     res.send("Hey, i am the root");
 })
 
+
+const validateListing= (req, res,next)=>{
+  let result= listingSchema.validate(req.body);
+  if(result.error)
+  {
+    console.log(err);
+    throw new ExpressError(400,result.error);
+    }
+    else{
+      next();
+    }
+ 
+}
 
 // Inserting all data
 app.get("/testListing", async(req,res)=>{
@@ -225,17 +239,10 @@ app.get("/listing/:id", async(req, res)=> {
 })
 
 //create new route/property
-app.post("/listings", async(req,res,next)=>{
+app.post("/listings",  async(req,res,next)=>{
   
   try{
-    let result= listingSchema.validate(req.body);
-  if(result.error)
-  {
-    console.log(err);
-    throw new ExpressError(400,result.error);
     
-  }
-  console.log(result);
  let {title,price, location,country}= req.body;
   let newChat= new Listing({
     title: title,

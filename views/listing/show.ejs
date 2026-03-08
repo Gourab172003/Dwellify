@@ -70,16 +70,30 @@
 
       <div>
         <h4> Leave a Review </h4>
-        <form class="mb-2 mt-3" >
+        <form class="mb-2 mt-3 needs-validation"  action="/listings/<%=listing.id%>/reviews" method="POST" novalidate>
             <div>
                 <label for="rating"> Rating</label>
-                <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+                <input 
+                type="range"  
+                min="1" 
+                max="5" 
+                id="rating" 
+                name="review[rating]" 
+                class="form-range">
             </div> 
             <div >
                 <label for="comment" class="form-label" > Comment</label>
-                <textarea name="review[comment]" col="30" rows="5" class="form-control"></textarea>
+                <textarea name="review[comment]" 
+                col="30" 
+                rows="5" 
+                class="form-control"
+                required></textarea>
+                <div class="invalid-feedback">
+              Please add some comments for review
+            </div>
                 <br>
             </div>
+            
             <button class="btn btn-outline-dark">Submit</button>
         </form>
       </div>

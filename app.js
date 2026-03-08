@@ -300,6 +300,17 @@ app.delete("/listings/:id/del", async(req,res)=>{
   res.redirect("/listings");
 })
 
+//Reviews
+app.post("/listings/:id/reviews", async(req,res)=>{
+   let listing= await Listing.findById(req.params.id);
+   let newReview= new Review(req.body.review);
+   listing.reviews.push(newReview);
+
+   await newReview.save();
+   await listing.save();
+   console.log("new Review saved");
+})
+
 
 // app.all("*splat", (req,res,next)=>{
 // next(new ExpressError(404,"Pagenot Found!"))

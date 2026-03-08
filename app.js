@@ -19,7 +19,7 @@ app.use(express.static('public'));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.json());
 const ExpressError=require("./utils/expressError.js");
-const {listingSchema}= require("./schema.js");
+const {listingSchema, reviewSchema}= require("./schema.js");
 const Review= require("./models/review.js");
 
 main()
@@ -56,6 +56,20 @@ const validateListing= (req, res,next)=>{
     }
  
 }
+
+const validateReview= (req, res,next)=>{
+  let result= reviewSchema.validate(req.body);
+  if(result.error)
+  {
+    console.log(err);
+    throw new ExpressError(400,result.error);
+    }
+    else{
+      next();
+    }
+ 
+}
+
 
 // Inserting all data
 app.get("/testListing", async(req,res)=>{
@@ -271,7 +285,7 @@ app.get("/listings/edit/:id", (req,res)=> {
 })
 
 //Update DATA
-app.put("/listings/edit/update/:id", async(req,res)=>{
+app.put("/listings/edit/update/:id",validateReview, async(req,res)=>{
 let{id}=req.params;
 let{newTitle, newDescription, newImage, newPrice, newLocation, newCountry}= req.body;
 await Listing.findByIdAndUpdate(id, {

@@ -316,6 +316,7 @@ app.delete("/listings/:id/del", async(req,res)=>{
 
 //Reviews
 app.post("/listings/:id/reviews", async(req,res)=>{
+  let id= req.params.id;
    let listing= await Listing.findById(req.params.id);
    let newReview= new Review(req.body.review);
    listing.reviews.push(newReview);
@@ -323,6 +324,8 @@ app.post("/listings/:id/reviews", async(req,res)=>{
    await newReview.save();
    await listing.save();
    console.log("new Review saved");
+   res.redirect(`/listing/${id}`);
+   
 })
 
 

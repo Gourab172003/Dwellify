@@ -249,7 +249,7 @@ app.get("/listing/new",  (req, res)=>{
 // show user details 
 app.get("/listing/:id", async(req, res)=> {
   let {id}= req.params;
-  const listing=await Listing.findById(id);
+  const listing=await Listing.findById(id).populate("reviews");
   res.render("listing/show.ejs", {listing});
 })
 

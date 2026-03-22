@@ -96,6 +96,21 @@
             
             <button class="btn btn-outline-dark">Submit</button>
         </form>
+
+        <hr/>
+        <h4>All Reviews</h4>
+<div class="row">
+             <% for(let reviews of listing.reviews) { %>
+                
+                <div class="card Reviewcard col-6 mb-3">
+                <div class="card-body"> 
+                <h5 class="card-title">User</h5>
+                <p class="card-text"><%= reviews.comment %></p>
+                <p class="card-text"><%= reviews.rating %> ⭐</p>
+        </div>
+      </div>
+  <% } %>
+</div>
       </div>
 
     </div>

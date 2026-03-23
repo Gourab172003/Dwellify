@@ -246,6 +246,11 @@ app.get("/listing/new",  (req, res)=>{
   res.render("listing/new.ejs")
 })
 
+app.get("/listings/edit/:id", (req,res)=> {
+  let{id}= req.params;
+  res.render("listing/edit.ejs",{id});
+}) 
+
 // show user details 
 app.get("/listing/:id", async(req, res)=> {
   let {id}= req.params;
@@ -279,10 +284,7 @@ app.post("/listings",  async(req,res,next)=>{
   
 })
 
-app.get("/listings/edit/:id", (req,res)=> {
-  let{id}= req.params;
-  res.render("listing/edit.ejs",{id});
-})
+
 
 //Update DATA
 app.put("/listings/edit/update/:id",validateReview, async(req,res)=>{
@@ -328,23 +330,87 @@ app.post("/listings/:id/reviews", async(req,res)=>{
    
 })
 
+//delete review route 
+// app.delete("/listings/:id/reviews/:reviewId",async(req,res)=>{
+//   let{id, reviewId}= req.params;
 
-// app.all("*splat", (req,res,next)=>{
-// next(new ExpressError(404,"Pagenot Found!"))
-// })
+//   await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+//   await Review.findByIdAndDelete(reviewId);
+//   res.redirect(`/listings/${id}`);
+// } )
+// app.delete("/listings/:id/reviews/:reviewId", async(req, res) => {
+//   let { id, reviewId } = req.params;
+  
+//   await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+//   await Review.findByIdAndDelete(reviewId);
+//   res.redirect(`/listings/${id}`);
+// });
 
-app.all("*splat", (req, res, next) => {
-  next(new ExpressError(504, "Page not found!"));  // ✅ passing ExpressError with statusCode
-});
+
+
+
+
 
 // app.use((err,req,res,next)=> {
 //   // let{statusCode, message}=err;
 //   res.status(statusCode).render("listing/error.ejs", {message});
 // }
+
 // )
+// app.all("*", (req, res, next) => {
+//   next(new ExpressError(504, "Page not found!"));  // ✅ passing ExpressError with statusCode
+// });
+
+// app.use((err, req, res, next) => {
+//   let { statusCode = 500, message = "Something went wrong" } = err; // ✅ fallback
+//   res.status(statusCode).render("listing/error.ejs", { message });
+// });
+
+//DELETE listings
+app.delete("/listings/:id/del", async(req,res)=>{
+  let{id}=req.params;
+  await Listing.findByIdAndDelete(id);
+  res.redirect("/listings");
+})
+
+//delete review route 
+app.delete("/listings/:id/reviews/:reviewId",async(req,res)=>{
+  let{id, reviewId}= req.params;
+  await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/listings/${id}`);
+})
+
+// app.delete("/listings/:id/reviews/:reviewId", async(req, res) => {
+//   try {
+//     let { id, reviewId } = req.params;
+    
+//     console.log("Deleting review:", { id, reviewId }); // Debug log
+    
+//     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+//     await Review.findByIdAndDelete(reviewId);
+    
+//     console.log("Redirect URL:", `/listings/${id}`); // Debug log
+//     res.redirect(`/listings/${id}`);
+//   } catch(err) {
+//     console.error("Error deleting review:", err);
+//     res.status(500).send("Error deleting review");
+//   }
+// });
+// // AFTER all your other routes
+// app.use((req, res, next) => {
+//   next(new ExpressError(404, "Page not found!"));
+// });
+
+// Error handling middleware (absolute last)
+
+app.all("*splat", (req,res,next)=>{
+next(new ExpressError(404,"Pagenot Found!"))
+})
+
 
 
 app.use((err, req, res, next) => {
-  let { statusCode = 500, message = "Something went wrong" } = err; // ✅ fallback
+  let { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("listing/error.ejs", { message });
 });

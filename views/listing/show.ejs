@@ -107,8 +107,14 @@
                 <h5 class="card-title">User</h5>
                 <p class="card-text"><%= reviews.comment %></p>
                 <p class="card-text"><%= reviews.rating %> ⭐</p>
+
+                
+    <form method= "POST" action="/listings/<%= listing.id %>/reviews/<%= reviews.id %>?_method=DELETE">
+        <button  class = "btn btn-outline-dark"> Delete </button>
+    </form>
+
         </div>
-      </div>
+      </div> 
   <% } %>
 </div>
       </div>

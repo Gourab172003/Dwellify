@@ -22,6 +22,8 @@ const ExpressError=require("./utils/expressError.js");
 const {listingSchema, reviewSchema}= require("./schema.js");
 const Review= require("./models/review.js");
 
+const listings= require("./routes/listing.js");
+
 main()
 .then(()=>{
   console.log("connection is successful");
@@ -43,20 +45,6 @@ app.get("/", (req,res)=>{
     res.send("Hey, i am the root");
 })
 
-
-const validateListing= (req, res,next)=>{
-  let result= listingSchema.validate(req.body);
-  if(result.error)
-  {
-    console.log(err);
-    throw new ExpressError(400,result.error);
-    }
-    else{
-      next();
-    }
- 
-}
-
 const validateReview= (req, res,next)=>{
   let result= reviewSchema.validate(req.body);
   if(result.error)
@@ -69,6 +57,10 @@ const validateReview= (req, res,next)=>{
     }
  
 }
+
+app.use("/listings", listings)
+
+
 
 
 // Inserting all data
@@ -234,87 +226,18 @@ await sampleListing15.save();
   res.send("Success");
 })
  
-//Shoiw All listings 
-app.get("/listings", async(req,res)=>{
 
-  const allListings= await Listing.find({});
-  res.render("listing/index.ejs", {allListings});
-})
 
-//new route 
-app.get("/listing/new",  (req, res)=>{
-  res.render("listing/new.ejs")
-})
 
 app.get("/listings/edit/:id", (req,res)=> {
   let{id}= req.params;
   res.render("listing/edit.ejs",{id});
 }) 
 
-// show user details 
-app.get("/listing/:id", async(req, res)=> {
-  let {id}= req.params;
-  const listing=await Listing.findById(id).populate("reviews");
-  res.render("listing/show.ejs", {listing});
-})
-
-//create new route/property
-app.post("/listings",  async(req,res,next)=>{
-  
-  try{
-    
- let {title,price, location,country}= req.body;
-  let newChat= new Listing({
-    title: title,
-    price: price,
-    location: location,
-    country: country,
-    
-  });
-  newChat.save()
-  .then(()=>{console.log (newChat)})
-  .catch((err)=>{ console.log(err)});
-  res.redirect("/listings");
-  }
-  catch(err)
-  {
-    next(err);
-  }
- 
-  
-})
 
 
 
-//Update DATA
-app.put("/listings/edit/update/:id",validateReview, async(req,res)=>{
-let{id}=req.params;
-let{newTitle, newDescription, newImage, newPrice, newLocation, newCountry}= req.body;
-await Listing.findByIdAndUpdate(id, {
-  title:newTitle,
-  description:newDescription,
-  image:newImage,
-  price:newPrice,
-  location:newLocation,
-  country:newCountry,
-})
-res.redirect("/listings")
-})
 
-// //DELETE
-// app.delete("/listings/:id/del", async(req,res)=>{
-//   let{id}=req.params;
-//    await Listing.findByIdAndDelete(id);
-//    res.redirect("/listings");
-// })
-
-
-//DELETE
-app.delete("/listings/:id/del", async(req,res)=>{
-  let{id}=req.params;
-  await Listing.findByIdAndDelete(id);  // Remove quotes around id
-  res.redirect("/listings");
-})
 
 //Reviews
 app.post("/listings/:id/reviews", async(req,res)=>{

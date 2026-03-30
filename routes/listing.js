@@ -6,19 +6,15 @@ const Listing = require("../models/listing.js");
 
 
 
-const validateListing= (req, res,next)=>{
-  let result= listingSchema.validate(req.body);
-  if(result.error)
-  {
-    console.log(err);
-    throw new ExpressError(400,result.error);
-    }
-    else{
-      next();
-    }
- 
+const validateListing = (req, res, next) => {
+  let result = listingSchema.validate(req.body);
+  if (result.error) {
+    console.log(result.error);  // ✅ correct variable
+    throw new ExpressError(400, result.error);
+  } else {
+    next();
+  }
 }
-
 
 
 
@@ -43,12 +39,6 @@ router.get("/new", (req,res)=>{
 
 
 
-// show user details 
-router.get("/:id", async(req, res)=> {
-  let {id}= req.params;
-  const listing=await Listing.findById(id).populate("reviews");
-  res.render("listing/show.ejs", {listing});
-})
 
 
 
@@ -58,10 +48,10 @@ router.get("/:id", async(req, res)=> {
 
 
 // Create route: POST /listings
-router.post("/new/sub", validateListing,async (req, res, next) => {
+router.post("/new/sub",validateListing,async (req, res, next) => {
   try {
     // Extract ALL fields from req.body
-    let { title, description, image, price, location, country } = req.body;
+    let { title, description, image, price, location, country } = req.body.Listing;
     
     const newListing = new Listing({
       title,
@@ -117,6 +107,14 @@ router.get("/edit/:id", (req,res)=> {
   let{id}= req.params;
   res.render("listing/edit.ejs",{id});
 }) 
+
+// show user details 
+router.get("/:id", async(req, res)=> {
+  let {id}= req.params;
+  const listing=await Listing.findById(id).populate("reviews");
+  res.render("listing/show.ejs", {listing});
+})
+
 
 module.exports=router;
 

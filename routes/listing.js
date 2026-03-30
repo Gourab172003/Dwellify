@@ -36,6 +36,10 @@ router.get("/", async(req,res)=>{
 
 
 
+//new Property form
+router.get("/new", (req,res)=>{
+  res.render("listing/new.ejs");
+})
 
 
 
@@ -50,8 +54,11 @@ router.get("/:id", async(req, res)=> {
 
 
 
+
+
+
 // Create route: POST /listings
-router.post("/new", async (req, res, next) => {
+router.post("/new/sub", validateListing,async (req, res, next) => {
   try {
     // Extract ALL fields from req.body
     let { title, description, image, price, location, country } = req.body;
@@ -105,10 +112,11 @@ router.delete("/:id/del", async(req,res)=>{
   res.redirect("/listings");
 })
 
-module.exports=router;
-
 //edit listings 
 router.get("/edit/:id", (req,res)=> {
   let{id}= req.params;
   res.render("listing/edit.ejs",{id});
 }) 
+
+module.exports=router;
+

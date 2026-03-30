@@ -1,7 +1,7 @@
 const express= require("express");
 const router=express.Router();
 const ExpressError=require("../utils/expressError.js");
-const {listingSchema, reviewSchema}= require("../schema.js");
+const {listingSchema}= require("../schema.js");
 const Listing = require("../models/listing.js");
 
 
@@ -20,18 +20,7 @@ const validateListing= (req, res,next)=>{
 }
 
 
-const validateReview= (req, res,next)=>{
-  let result= reviewSchema.validate(req.body);
-  if(result.error)
-  {
-    console.log(err);
-    throw new ExpressError(400,result.error);
-    }
-    else{
-      next();
-    }
- 
-}
+
 
 
 
@@ -46,10 +35,7 @@ router.get("/", async(req,res)=>{
 
 
 
-//new route 
-router.get("/new",  (req, res)=>{
-  res.render("listing/new.ejs")
-})
+
 
 
 
@@ -62,47 +48,54 @@ router.get("/:id", async(req, res)=> {
 
 
 
-//create new route/property
-router.post("/",  async(req,res,next)=>{
-  
-  try{
+
+
+// Create route: POST /listings
+router.post("/new", async (req, res, next) => {
+  try {
+    // Extract ALL fields from req.body
+    let { title, description, image, price, location, country } = req.body;
     
- let {title,price, location,country}= req.body;
-  let newChat= new Listing({
-    title: title,
-    price: price,
-    location: location,
-    country: country,
-    
-  });
-  newChat.save()
-  .then(()=>{console.log (newChat)})
-  .catch((err)=>{ console.log(err)});
-  res.redirect("/listings");
-  }
-  catch(err)
-  {
+    const newListing = new Listing({
+      title,
+      description,
+      image,
+      price,
+      location,
+      country,
+    });
+
+    await newListing.save();
+    console.log("New listing saved:", newListing);
+    res.redirect("/listings");
+  } catch (err) {
     next(err);
   }
- 
+});
+
+
+
+
+
+
+
+
+router.put("/edit/update/:id", async (req, res) => {
+  let { id } = req.params;
+  let { newTitle, newDescription, newImage, newPrice, newLocation, newCountry } = req.body.Listing; 
   
-})
+  await Listing.findByIdAndUpdate(id, {
+    title: newTitle,
+    description: newDescription,
+    image: newImage,
+    price: newPrice,
+    location: newLocation,
+    country: newCountry,
+  });
+  
+  res.redirect("/listings");
+});
 
-
-//Update DATA
-router.put("/edit/update/:id",validateReview, async(req,res)=>{
-let{id}=req.params;
-let{newTitle, newDescription, newImage, newPrice, newLocation, newCountry}= req.body;
-await Listing.findByIdAndUpdate(id, {
-  title:newTitle,
-  description:newDescription,
-  image:newImage,
-  price:newPrice,
-  location:newLocation,
-  country:newCountry,
-})
-res.redirect("/listings")
-})
 
 
 //DELETE
@@ -113,3 +106,9 @@ router.delete("/:id/del", async(req,res)=>{
 })
 
 module.exports=router;
+
+//edit listings 
+router.get("/edit/:id", (req,res)=> {
+  let{id}= req.params;
+  res.render("listing/edit.ejs",{id});
+}) 

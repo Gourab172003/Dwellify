@@ -1,7 +1,6 @@
 const express= require('express');
 const app= express();
 const mongoose= require('mongoose');
-
 const Listing = require("./models/listing.js");
 const path= require("path");
 const methodOverride= require("method-override");
@@ -9,12 +8,10 @@ app.use(methodOverride('_method'));
 const ejsMate=require("ejs-Mate");
 app.engine("ejs", ejsMate)
 const joi= require('joi');
-
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname,"views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.json());
@@ -23,6 +20,7 @@ const {listingSchema, reviewSchema}= require("./schema.js");
 const Review= require("./models/review.js");
 
 const listings= require("./routes/listing.js");
+const reviews= require("./routes/review.js");
 
 main()
 .then(()=>{
@@ -45,20 +43,10 @@ app.get("/", (req,res)=>{
     res.send("Hey, i am the root");
 })
 
-const validateReview= (req, res,next)=>{
-  let result= reviewSchema.validate(req.body);
-  if(result.error)
-  {
-    console.log(err);
-    throw new ExpressError(400,result.error);
-    }
-    else{
-      next();
-    }
- 
-}
+
 
 app.use("/listings", listings)
+app.use("/listings/:id/reviews", reviews);
 
 
 
@@ -229,103 +217,17 @@ await sampleListing15.save();
 
 
 
-app.get("/listings/edit/:id", (req,res)=> {
-  let{id}= req.params;
-  res.render("listing/edit.ejs",{id});
-}) 
 
 
 
 
 
 
-//Reviews
-app.post("/listings/:id/reviews", async(req,res)=>{
-  let id= req.params.id;
-   let listing= await Listing.findById(req.params.id);
-   let newReview= new Review(req.body.review);
-   listing.reviews.push(newReview);
-
-   await newReview.save();
-   await listing.save();
-   console.log("new Review saved");
-   res.redirect(`/listing/${id}`);
-   
-})
-
-//delete review route 
-// app.delete("/listings/:id/reviews/:reviewId",async(req,res)=>{
-//   let{id, reviewId}= req.params;
-
-//   await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
-//   await Review.findByIdAndDelete(reviewId);
-//   res.redirect(`/listings/${id}`);
-// } )
-// app.delete("/listings/:id/reviews/:reviewId", async(req, res) => {
-//   let { id, reviewId } = req.params;
-  
-//   await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-//   await Review.findByIdAndDelete(reviewId);
-//   res.redirect(`/listings/${id}`);
-// });
 
 
 
 
 
-
-// app.use((err,req,res,next)=> {
-//   // let{statusCode, message}=err;
-//   res.status(statusCode).render("listing/error.ejs", {message});
-// }
-
-// )
-// app.all("*", (req, res, next) => {
-//   next(new ExpressError(504, "Page not found!"));  // ✅ passing ExpressError with statusCode
-// });
-
-// app.use((err, req, res, next) => {
-//   let { statusCode = 500, message = "Something went wrong" } = err; // ✅ fallback
-//   res.status(statusCode).render("listing/error.ejs", { message });
-// });
-
-//DELETE listings
-app.delete("/listings/:id/del", async(req,res)=>{
-  let{id}=req.params;
-  await Listing.findByIdAndDelete(id);
-  res.redirect("/listings");
-})
-
-//delete review route 
-app.delete("/listings/:id/reviews/:reviewId",async(req,res)=>{
-  let{id, reviewId}= req.params;
-  await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
-  await Review.findByIdAndDelete(reviewId);
-  res.redirect(`/listings/${id}`);
-})
-
-// app.delete("/listings/:id/reviews/:reviewId", async(req, res) => {
-//   try {
-//     let { id, reviewId } = req.params;
-    
-//     console.log("Deleting review:", { id, reviewId }); // Debug log
-    
-//     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-//     await Review.findByIdAndDelete(reviewId);
-    
-//     console.log("Redirect URL:", `/listings/${id}`); // Debug log
-//     res.redirect(`/listings/${id}`);
-//   } catch(err) {
-//     console.error("Error deleting review:", err);
-//     res.status(500).send("Error deleting review");
-//   }
-// });
-// // AFTER all your other routes
-// app.use((req, res, next) => {
-//   next(new ExpressError(404, "Page not found!"));
-// });
-
-// Error handling middleware (absolute last)
 
 app.all("*splat", (req,res,next)=>{
 next(new ExpressError(404,"Pagenot Found!"))

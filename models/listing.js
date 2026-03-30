@@ -10,10 +10,10 @@ const ListingSchema = new Schema({
     description: String,
     image: {
         type: String,
-        default: "https://unsplash.com/photos/a-body-of-water-surrounded-by-forest-under-a-cloudy-sky-r8ZG4Tg_sj0",
+        default: "https://images.steamusercontent.com/ugc/861732134861592890/6AF17B5C8B544ED95205C024554DBC212AD92277/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
         set: (v) => {
             return v === "" 
-              ? "https://unsplash.com/photos/a-body-of-water-surrounded-by-forest-under-a-cloudy-sky-r8ZG4Tg_sj0" 
+              ? "https://images.steamusercontent.com/ugc/861732134861592890/6AF17B5C8B544ED95205C024554DBC212AD92277/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" 
               : v;
         }
     },

@@ -6,6 +6,7 @@ const Listing = require("../models/listing.js");
 
 
 
+
 const validateListing = (req, res, next) => {
   let result = listingSchema.validate(req.body);
   if (result.error) {
@@ -51,7 +52,7 @@ router.get("/new", (req,res)=>{
 router.post("/new/sub",validateListing,async (req, res, next) => {
   try {
     // Extract ALL fields from req.body
-    let { title, description, image, price, location, country } = req.body.Listing;
+    let { title, description, image, price, location, country } = req.body.listing;
     
     const newListing = new Listing({
       title,
@@ -64,6 +65,7 @@ router.post("/new/sub",validateListing,async (req, res, next) => {
 
     await newListing.save();
     console.log("New listing saved:", newListing);
+    req.flash("success", "New Listing created!");
     res.redirect("/listings");
   } catch (err) {
     next(err);

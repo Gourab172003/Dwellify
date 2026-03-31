@@ -1,5 +1,9 @@
 const express= require('express');
 const app= express();
+const flash=require("connect-flash");
+const session= require("express-session");
+
+
 const mongoose= require('mongoose');
 const Listing = require("./models/listing.js");
 const path= require("path");
@@ -15,10 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.json());
-const ExpressError=require("./utils/expressError.js");
-const {listingSchema, reviewSchema}= require("./schema.js");
-const Review= require("./models/review.js");
 
+
+
+
+const ExpressError=require("./utils/expressError.js");
 const listings= require("./routes/listing.js");
 const reviews= require("./routes/review.js");
 
@@ -31,202 +36,37 @@ main()
 
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/wonderlust');
-
- 
 }
 
-app.listen("8080", (req,res)=>{
-    console.log("The Server is working")
-});
+const sessionOptions={
+    secret:"mysupersecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+         expires: Date.now() + 7 *24 *60 *60 *1000,
+         maxAge: 7 *24 *60 *60 *1000,
+         httpOnly: true,
+}
+}
+
+
+app.use(session(sessionOptions));
+app.use(flash());
+app.use((req,res,next)=>{
+res.locals.success= req.flash("success");
+next();
+})
+
+
 
 app.get("/", (req,res)=>{
     res.send("Hey, i am the root");
 })
 
 
-
+// Accessing Routes 
 app.use("/listings", listings)
 app.use("/listings/:id/reviews", reviews);
-
-
-
-
-// Inserting all data
-app.get("/testListing", async(req,res)=>{
- 
-  let sampleListing1 = new Listing({
-  title: "Sea View Villa",
-  description: "Luxury villa with ocean view",
-  price: 4500000,
-  location: "Goa",
-  country: "India",
-  imaage:"https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?s=612x612&w=0&k=20&c=Ek2P0DQ9nHQero4m9mdDyCVMVq3TLnXigxNPcZbgX2E="
-});
-
-let sampleListing2 = new Listing({
-  title: "Hilltop Cottage",
-  description: "Peaceful cottage in the hills",
-  price: 2800000,
-  location: "Manali",
-  country: "India",
-  image:"https://www.shutterstock.com/image-illustration/3d-rendering-modern-luxurious-house-260nw-2434162449.jpg"
-});
-
-let sampleListing3 = new Listing({
-  title: "Royal Palace Stay",
-  description: "Heritage style luxury property",
-  price: 7500000,
-  location: "Jaipur",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAD09U8Hv-lf3EWBWnvCFKHifittXLfaRyew&s"
-});
-
-let sampleListing4 = new Listing({
-  title: "Lake Side Villa",
-  description: "Beautiful villa beside the lake",
-  price: 5200000,
-  location: "Udaipur",
-  country: "India",
-  image:"https://www.morairainvest.com/objetos/temp/source/morairainvest/625972/foto1.jpeg"
-});
-
-let sampleListing5 = new Listing({
-  title: "Forest Retreat",
-  description: "Calm home surrounded by forest",
-  price: 3100000,
-  location: "Coorg",
-  country: "India",
-  image:"https://media.vrbo.com/lodging/103000000/102350000/102343500/102343473/30f185c5.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
-});
-
-let sampleListing6 = new Listing({
-  title: "Beach Resort Home",
-  description: "Private property near the beach",
-  price: 6800000,
-  location: "Kovalam",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsGGJO2OVW3bTRpjQZk9FR6YMn64e6N_tg2g&s"
-});
-
-let sampleListing7 = new Listing({
-  title: "City Penthouse",
-  description: "Modern penthouse in metro city",
-  price: 9000000,
-  location: "Mumbai",
-  country: "India",
-  image:"https://luxuryforsale.properties/luxury-real-estate/listings/andalusian-style-villa-in-el-herrojo-benahavis-ref-130974/"
-});
-
-let sampleListing8 = new Listing({
-  title: "Tea Garden Bungalow",
-  description: "Bungalow in tea estate area",
-  price: 3600000,
-  location: "Darjeeling",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT13ukuIsj56ZN-1fq3qpJxteMCDrCQ76Le6w&s"
-});
-
-let sampleListing9 = new Listing({
-  title: "River View Home",
-  description: "Scenic river facing property",
-  price: 4200000,
-  location: "Rishikesh",
-  country: "India",
-  image:"https://luxuryforsale.properties/wp-content/uploads/2025/11/The-Ridge-Villa-el-Herrojo-2-300x225.jpg"
-});
-
-let sampleListing10 = new Listing({
-  title: "Luxury Farmhouse",
-  description: "Spacious farmhouse with garden",
-  price: 5800000,
-  location: "Delhi",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu4XCPj5N7GXcd1xkqAsKQcj9A0kwRkWBDTg&s"
-})
-let sampleListing11 = new Listing({
-  title: "Mountain View Resort",
-  description: "Resort with panoramic mountain views",
-  price: 6400000,
-  location: "Shimla",
-  country: "India",
-    image:"https://luxuryforsale.properties/wp-content/uploads/2025/11/The-Ridge-Villa-el-Herrojo-2-300x225.jpg"
-});
-
-let sampleListing12 = new Listing({
-  title: "Backwater Villa",
-  description: "Luxury villa near Kerala backwaters",
-  price: 5100000,
-  location: "Alleppey",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJo5-9sJ_sJDk9C-zFgxpKrCy2Zl_CpNgMkg&s"
-});
-
-let sampleListing13 = new Listing({
-  title: "Heritage Haveli",
-  description: "Traditional Rajasthani style home",
-  price: 4700000,
-  location: "Jodhpur",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu4XCPj5N7GXcd1xkqAsKQcj9A0kwRkWBDTg&s"
-});
-
-let sampleListing14 = new Listing({
-  title: "Skyline Apartment",
-  description: "High-rise apartment with city view",
-  price: 7200000,
-  location: "Bangalore",
-  country: "India",
-  image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT13ukuIsj56ZN-1fq3qpJxteMCDrCQ76Le6w&s"
-});
-
-let sampleListing15 = new Listing({
-  title: "Palm Tree Villa",
-  description: "Tropical villa with private garden",
-  price: 5600000,
-  location: "Goa",
-  country: "India",
-  image:"https://media.vrbo.com/lodging/103000000/102350000/102343500/102343473/30f185c5.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
-});
-
-
-
-  
-
-  
-await sampleListing1.save();
-await sampleListing2.save();
-await sampleListing3.save();
-await sampleListing4.save();
-await sampleListing5.save();
-await sampleListing6.save();
-await sampleListing7.save();
-await sampleListing8.save();
-await sampleListing9.save();
-await sampleListing10.save();
-await sampleListing11.save();
-await sampleListing12.save();
-await sampleListing13.save();
-await sampleListing14.save();
-await sampleListing15.save();
-
-
-  
-  res.send("Success");
-})
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 app.all("*splat", (req,res,next)=>{
@@ -238,4 +78,10 @@ next(new ExpressError(404,"Pagenot Found!"))
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("listing/error.ejs", { message });
+});
+
+
+//Server Live 
+app.listen("8080", (req,res)=>{
+    console.log("The Server is working")
 });

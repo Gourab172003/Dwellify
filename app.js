@@ -26,6 +26,7 @@ app.use(express.json());
 const ExpressError=require("./utils/expressError.js");
 const listings= require("./routes/listing.js");
 const reviews= require("./routes/review.js");
+const userRouter= require("./routes/user.js");
 
 main()
 .then(()=>{
@@ -52,10 +53,21 @@ const sessionOptions={
 
 app.use(session(sessionOptions));
 app.use(flash());
+
+const passport= require("passport");
+const LocalStratergy=require("passport-local");
+const user = require("./models/user.js");
+
 app.use((req,res,next)=>{
 res.locals.success= req.flash("success");
 next();
 })
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStratergy (user.authenticate ()));
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
 
 
 
@@ -63,10 +75,21 @@ app.get("/", (req,res)=>{
     res.send("Hey, i am the root");
 })
 
+//adding demo users 
+app.get("/demouser", async(req,res)=>{
+  let fakeUser= new user({
+    email: "student@gmail.com",
+    username: "delta-student",
+  });
+
+  let registerdUser= await user.register(fakeUser, "helloworld");
+  res.send(registerdUser);
+})
 
 // Accessing Routes 
 app.use("/listings", listings)
 app.use("/listings/:id/reviews", reviews);
+app.use("/", userRouter);
 
 
 app.all("*splat", (req,res,next)=>{

@@ -3,7 +3,7 @@ const router=express.Router();
 const ExpressError=require("../utils/expressError.js");
 const {listingSchema}= require("../schema.js");
 const Listing = require("../models/listing.js");
-
+const {isLogedin}= require("../middleware.js");
 
 
 
@@ -18,11 +18,6 @@ const validateListing = (req, res, next) => {
 }
 
 
-
-
-
-
-
 //Shoiw All listings 
 router.get("/", async(req,res)=>{
 
@@ -34,16 +29,10 @@ router.get("/", async(req,res)=>{
 
 
 //new Property form
-router.get("/new", (req,res)=>{
+router.get("/new", isLogedin, (req,res)=>{
+  
   res.render("listing/new.ejs");
 })
-
-
-
-
-
-
-
 
 
 
@@ -72,14 +61,13 @@ router.post("/new/sub",validateListing,async (req, res, next) => {
   }
 });
 
+//edit listings 
+router.get("/edit/:id",isLogedin, (req,res)=> {
+  let{id}= req.params;
+  res.render("listing/edit.ejs",{id});
+}) 
 
-
-
-
-
-
-
-router.put("/edit/update/:id", async (req, res) => {
+router.put("/edit/update/:id",  async (req, res) => {
   let { id } = req.params;
   let { newTitle, newDescription, newImage, newPrice, newLocation, newCountry } = req.body.Listing; 
   
@@ -96,19 +84,14 @@ router.put("/edit/update/:id", async (req, res) => {
 });
 
 
-
 //DELETE
-router.delete("/:id/del", async(req,res)=>{
+router.delete("/:id/del", isLogedin,async(req,res)=>{
   let{id}=req.params;
   await Listing.findByIdAndDelete(id);  // Remove quotes around id
   res.redirect("/listings");
 })
 
-//edit listings 
-router.get("/edit/:id", (req,res)=> {
-  let{id}= req.params;
-  res.render("listing/edit.ejs",{id});
-}) 
+
 
 // show user details 
 router.get("/:id", async(req, res)=> {

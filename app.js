@@ -50,21 +50,23 @@ const sessionOptions={
 }
 }
 
-
-app.use(session(sessionOptions));
-app.use(flash());
-
 const passport= require("passport");
 const LocalStratergy=require("passport-local");
 const user = require("./models/user.js");
 
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+
+
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use((req,res,next)=>{
 res.locals.success= req.flash("success");
 next();
 })
-
-app.use(passport.initialize());
-app.use(passport.session());
 passport.use(new LocalStratergy (user.authenticate ()));
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());

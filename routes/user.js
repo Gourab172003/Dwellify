@@ -19,8 +19,14 @@ router.post(
             const newUser = new User({ email, username });
             const registeredUser = await User.register(newUser, password);
             console.log(registeredUser);
-            req.flash("success", "Welcome to Dwellify!");
+            req.login(registeredUser, (err)=>{
+        if(err){
+            return next(err);
+        }
+         req.flash("success", "Welcome to Dwellify!");
             res.redirect("/listings");
+    })
+           
         } catch (e) {
             req.flash("error", e.message);
             res.redirect("/signup");

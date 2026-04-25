@@ -37,21 +37,9 @@ router.post("/new/sub",validateListing,listingController.postListings);
 //edit listings 
 router.get("/edit/:id",isLogedin,listingController.editListings ) 
 
-router.put("/edit/update/:id",  async (req, res) => {
-  let { id } = req.params;
-  let { newTitle, newDescription, newImage, newPrice, newLocation, newCountry } = req.body.Listing; 
-  
-  await Listing.findByIdAndUpdate(id, {
-    title: newTitle,
-    description: newDescription,
-    image: newImage,
-    price: newPrice,
-    location: newLocation,
-    country: newCountry,
-  });
-  
-  res.redirect("/listings");
-});
+
+//put edited listings
+router.put("/edit/update/:id",listingController.putEditListings);
 
 
 //DELETE

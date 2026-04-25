@@ -41,3 +41,19 @@ module.exports.editListings=(req,res)=> {
   let{id}= req.params;
   res.render("listing/edit.ejs",{id});
 };
+
+module.exports.putEditListings= async (req, res) => {
+  let { id } = req.params;
+  let { newTitle, newDescription, newImage, newPrice, newLocation, newCountry } = req.body.Listing; 
+  
+  await Listing.findByIdAndUpdate(id, {
+    title: newTitle,
+    description: newDescription,
+    image: newImage,
+    price: newPrice,
+    location: newLocation,
+    country: newCountry,
+  });
+  
+  res.redirect("/listings");
+};

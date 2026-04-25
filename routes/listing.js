@@ -43,11 +43,7 @@ router.put("/edit/update/:id",listingController.putEditListings);
 
 
 //DELETE
-router.delete("/:id/del", isLogedin,async(req,res)=>{
-  let{id}=req.params;
-  await Listing.findByIdAndDelete(id);  // Remove quotes around id
-  res.redirect("/listings");
-})
+router.delete("/:id/del", isLogedin,listingController.deleteRoute);
 
 
 

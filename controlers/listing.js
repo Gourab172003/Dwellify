@@ -57,3 +57,9 @@ module.exports.putEditListings= async (req, res) => {
   
   res.redirect("/listings");
 };
+
+module.exports.deleteRoute=async(req,res)=>{
+  let{id}=req.params;
+  await Listing.findByIdAndDelete(id);  // Remove quotes around id
+  res.redirect("/listings");
+};

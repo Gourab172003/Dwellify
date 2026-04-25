@@ -4,7 +4,7 @@ const ExpressError=require("../utils/expressError.js");
 const {listingSchema}= require("../schema.js");
 const Listing = require("../models/listing.js");
 const {isLogedin}= require("../middleware.js");
-const listingController= require("../controlers/listing.js");
+const listingController= require("../controler/listing.js");
 
 
 

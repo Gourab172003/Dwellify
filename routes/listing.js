@@ -32,28 +32,7 @@ router.get("/new", isLogedin, listingController.renderNewForm);
 
 
 // Create route: POST /listings
-router.post("/new/sub",validateListing,async (req, res, next) => {
-  try {
-    // Extract ALL fields from req.body
-    let { title, description, image, price, location, country } = req.body.listing;
-    
-    const newListing = new Listing({
-      title,
-      description,
-      image,
-      price,
-      location,
-      country,
-    });
-
-    await newListing.save();
-    console.log("New listing saved:", newListing);
-    req.flash("success", "New Listing created!");
-    res.redirect("/listings");
-  } catch (err) {
-    next(err);
-  }
-});
+router.post("/new/sub",validateListing,listingController.postListings);
 
 //edit listings 
 router.get("/edit/:id",isLogedin, (req,res)=> {

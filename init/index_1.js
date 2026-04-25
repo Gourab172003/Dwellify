@@ -19,21 +19,9 @@ async function main() {
 
 const initDB = async () => {
     await Listing.deleteMany({});
-
-    // image field in your ListingSchema is a plain String,
-    // so we extract the url from the data.js image object
-    const cleanedData = initData.data.map((obj) => ({
-        title: obj.title,
-        description: obj.description,
-        image: obj.image.url,   // ← your schema stores image as String, not object
-        price: obj.price,
-        location: obj.location,
-        country: obj.country,
-    }));
-
     await Listing.insertMany(cleanedData);
     console.log("Data was initialized successfully!");
-    mongoose.connection.close(); // close connection after seeding
+    
 };
 
 initDB();

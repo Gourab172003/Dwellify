@@ -63,3 +63,9 @@ module.exports.deleteRoute=async(req,res)=>{
   await Listing.findByIdAndDelete(id);  // Remove quotes around id
   res.redirect("/listings");
 };
+
+module.exports.showUser=async(req, res)=> {
+  let {id}= req.params;
+  const listing=await Listing.findById(id).populate("reviews");
+  res.render("listing/show.ejs", {listing});
+};

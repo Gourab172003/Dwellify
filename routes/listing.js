@@ -48,11 +48,7 @@ router.delete("/:id/del", isLogedin,listingController.deleteRoute);
 
 
 // show user details 
-router.get("/:id", async(req, res)=> {
-  let {id}= req.params;
-  const listing=await Listing.findById(id).populate("reviews");
-  res.render("listing/show.ejs", {listing});
-})
+router.get("/:id", listingController.showUser);
 
 
 module.exports=router;

@@ -49,7 +49,7 @@ router.post(
     passport.authenticate("local", { failureRedirect: "/login", failureFlash:true,}),
     async(req,res)=>{
         req.flash("success", "Welcome back to Wanderlust");
-        res.redirect(res.locals.redirectUrl);
+        res.redirect(res.locals.redirectUrl || "/listings");
     }
 )
 

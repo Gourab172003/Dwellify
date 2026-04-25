@@ -3,13 +3,14 @@ module.exports.isLogedin=(req,res,next)=>{
       req.session.redirectUrl=req.originalUrl;
     req.flash("error", "You must be logged in to add new Property");
     return res.redirect("/login");
-    next();
+    
   }
+  next();
 }
 
 module.exports.saveRedirectUrl= (req,res,next)=>{
   if(req.session.redirectUrl) {
-    res.local.redirectUrl= req.session.redirectUrl;
+    res.locals.redirectUrl= req.session.redirectUrl;
   }
   next();
 }

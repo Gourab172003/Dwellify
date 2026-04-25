@@ -4,6 +4,7 @@ const ExpressError=require("../utils/expressError.js");
 const {listingSchema}= require("../schema.js");
 const Listing = require("../models/listing.js");
 const {isLogedin}= require("../middleware.js");
+const listingController= require("../controlers/listing.js");
 
 
 
@@ -29,10 +30,7 @@ router.get("/", async(req,res)=>{
 
 
 //new Property form
-router.get("/new", isLogedin, (req,res)=>{
-  
-  res.render("listing/new.ejs");
-})
+router.get("/new", isLogedin, listingController.renderNewForm);
 
 
 

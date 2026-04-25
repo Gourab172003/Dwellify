@@ -36,3 +36,8 @@ module.exports.postListings=async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.editListings=(req,res)=> {
+  let{id}= req.params;
+  res.render("listing/edit.ejs",{id});
+};

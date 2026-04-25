@@ -35,10 +35,7 @@ router.get("/new", isLogedin, listingController.renderNewForm);
 router.post("/new/sub",validateListing,listingController.postListings);
 
 //edit listings 
-router.get("/edit/:id",isLogedin, (req,res)=> {
-  let{id}= req.params;
-  res.render("listing/edit.ejs",{id});
-}) 
+router.get("/edit/:id",isLogedin,listingController.editListings ) 
 
 router.put("/edit/update/:id",  async (req, res) => {
   let { id } = req.params;

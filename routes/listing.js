@@ -20,11 +20,7 @@ const validateListing = (req, res, next) => {
 
 
 //Shoiw All listings 
-router.get("/", async(req,res)=>{
-
-  const allListings= await Listing.find({});
-  res.render("listing/index.ejs", {allListings});
-})
+router.get("/", listingController.showListings);
 
 
 

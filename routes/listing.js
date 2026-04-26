@@ -5,7 +5,8 @@ const {listingSchema}= require("../schema.js");
 const Listing = require("../models/listing.js");
 const {isLogedin}= require("../middleware.js");
 const listingController= require("../controler/listing.js");
-
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 
 const validateListing = (req, res, next) => {
@@ -32,7 +33,7 @@ router.get("/new", isLogedin, listingController.renderNewForm);
 
 
 // Create route: POST /listings
-router.post("/new/sub",validateListing,listingController.postListings);
+router.post("/new/sub",upload.single('listing[image]'),validateListing,listingController.postListings);
 
 //edit listings 
 router.get("/edit/:id",isLogedin,listingController.editListings ) 

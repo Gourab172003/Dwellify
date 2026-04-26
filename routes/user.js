@@ -16,11 +16,7 @@ router.get("/signup",userControler.renderSignup
 router.post("/signup",userControler.signup);
 
 // -----------------------------------------Log-in get form  ----------------------------------------------
-router.get(
-    "/login", (req,res)=>{
-        res.render("users/login.ejs");
-    }
-)
+router.get("/login",userControler.renderLogin);
 
 // -----------------------------------------Log-in Information Verification ----------------------------------------------
 router.post(

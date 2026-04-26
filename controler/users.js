@@ -21,3 +21,7 @@ module.exports.signup=async (req, res, next) => {
         res.redirect("/signup");  // ✅ proper redirect
     }
 };
+
+module.exports.renderLogin=(req,res)=>{
+        res.render("users/login.ejs");
+    };

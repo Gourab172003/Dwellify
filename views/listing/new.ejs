@@ -4,14 +4,19 @@
 <body>
     <br>
     <h3> Add new Property </h3>
-    <form method="POST" action="/listings/new/sub" novalidate class="needs-validation">
+    <form 
+    method="POST" 
+    action="/listings/new/sub" 
+    novalidate 
+    class="needs-validation"
+    enctype="multipart/form-data">
         <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input name="listing[title]" placeholder="Enter title" type="text" class="form-control">
         <div class="valid-feedback">Title looks good </div>
          <div class="invalid-feedback">Please enter a valid title </div>
         </div> 
-         
+          
         <div  class="mb-3">
         <label for="title" class="form-label">Description</label>
         <input name="listing[description]" textarea="Enter Description" type="text" class="form-control"required>
@@ -22,6 +27,13 @@
         <div  class="mb-3">
             <label for="title" class="form-label">Image-Link</label>
             <input name="listing[image]" placeholder="Enter Image URL/Link" type="text" class="form-control">
+              <div class="valid-feedback"> ✔</div>
+            <div class="invalid-feedback">Please enter Image URL</div>
+        </div>
+
+        <div  class="mb-3">
+            <label for="title" class="form-label">Image-Link</label>
+            <input name="listing[image]"  type="file" class="form-control">
               <div class="valid-feedback"> ✔</div>
             <div class="invalid-feedback">Please enter Image URL</div>
         </div>

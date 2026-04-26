@@ -22,11 +22,8 @@ router.get("/login",userControler.renderLogin);
 router.post(
     "/login",
     saveRedirectUrl,
-    passport.authenticate("local", { failureRedirect: "/login", failureFlash:true,}),
-    async(req,res)=>{
-        req.flash("success", "Welcome back to Wanderlust");
-        res.redirect(res.locals.redirectUrl || "/listings");
-    }
+    passport.authenticate("local", { failureRedirect: "/login", failureFlash:true,}),userControler.Login
+    
 )
 
 // -----------------------------------------Log-out ----------------------------------------------

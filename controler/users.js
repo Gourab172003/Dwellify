@@ -25,3 +25,9 @@ module.exports.signup=async (req, res, next) => {
 module.exports.renderLogin=(req,res)=>{
         res.render("users/login.ejs");
     };
+
+
+    module.exports.Login=async(req,res)=>{
+        req.flash("success", "Welcome back to Wanderlust");
+        res.redirect(res.locals.redirectUrl || "/listings");
+    };

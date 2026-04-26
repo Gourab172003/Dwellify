@@ -27,16 +27,7 @@ router.post(
 )
 
 // -----------------------------------------Log-out ----------------------------------------------
-router.get("/logout", (req,res,next)=>{
-    req.logout((err)=>{
-        if(err){
-            return next(err);
-        }
-        req.flash("success", "You are loged out");
-        res.redirect("/listings");
-
-    })
-})
+router.get("/logout",userControler.Logout );
 
 
 

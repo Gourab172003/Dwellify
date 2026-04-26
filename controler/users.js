@@ -31,3 +31,15 @@ module.exports.renderLogin=(req,res)=>{
         req.flash("success", "Welcome back to Wanderlust");
         res.redirect(res.locals.redirectUrl || "/listings");
     };
+
+
+    module.exports.Logout=(req,res,next)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err);
+        }
+        req.flash("success", "You are loged out");
+        res.redirect("/listings");
+
+    })
+};

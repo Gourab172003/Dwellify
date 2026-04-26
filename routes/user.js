@@ -1,39 +1,37 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const { saveRedirectUrl }= require ("../middleware.js");
 const User = require("../models/user.js"); 
 const passport=require("passport");
-const { saveRedirectUrl }= require ("../middleware.js");
+const userControler= require("../controler/users.js");
+
 
 
 
 // -----------------------------------------Signup get form ----------------------------------------------
 
-router.get("/signup", (req, res) => {
-    res.render("users/signup.ejs");
-});
-// -----------------------------------------Signup infoormation post ----------------------------------------------
-router.post(
-    "/signup",
-    async (req, res) => {
-        try {
-            let { username, email, password } = req.body;
-            const newUser = new User({ email, username });
-            const registeredUser = await User.register(newUser, password);
-            console.log(registeredUser);
-            req.login(registeredUser, (err)=>{
-        if(err){
-            return next(err);
-        }
-         req.flash("success", "Welcome to Dwellify!");
-            res.redirect("/listings");
-    })
-           
-        } catch (e) {
-            req.flash("error", e.message);
-            res.redirect("/signup");
-        } 
-    }
+router.get("/signup",userControler.renderSignup
 );
+// -----------------------------------------Signup infoormation post ----------------------------------------------
+router.post("/signup",
+     async (req, res, next) => {  
+    try {
+        let { username, email, password } = req.body;
+        const newUser = new User({ email, username });
+        const registeredUser = await User.register(newUser, password);
+        console.log(registeredUser);
+        req.login(registeredUser, (err) => {
+            if (err) {
+                return next(err);  // ✅ now 'next' is defined
+            }
+            req.flash("success", "Welcome to Dwellify!");
+            res.redirect("/listings");
+        });
+    } catch (e) {
+        req.flash("error", e.message);
+        res.redirect("/signup");  // ✅ proper redirect
+    }
+});
 
 // -----------------------------------------Log-in get form  ----------------------------------------------
 router.get(

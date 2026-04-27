@@ -27,7 +27,7 @@ main()
     .catch(err => console.log("DB Error:", err));
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wonderlust');
+    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
 }
 
 // -----------------------------------------App Config-----------------------------------------

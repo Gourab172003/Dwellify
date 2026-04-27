@@ -18,13 +18,7 @@ async function main() {
 
 const initDB = async () => {
   await Listing.deleteMany({});
-
-  const mappedData = initData.data.map((obj) => ({
-    ...obj,
-    image: obj.image?.url || obj.image || "",
-  }));
-
-  await Listing.insertMany(mappedData);
+  await Listing.insertMany(initData.data);
   console.log("data was initialized");
   await mongoose.connection.close();
 };

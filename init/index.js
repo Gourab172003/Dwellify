@@ -18,7 +18,14 @@ async function main() {
 
 const initDB = async () => {
   await Listing.deleteMany({});
-  await Listing.insertMany(initData.data);
+  
+  // Map over the data to extract the image URL, since the schema expects a string
+  const mappedData = initData.data.map((obj) => ({
+    ...obj,
+    image: typeof obj.image === 'object' ? obj.image.url : obj.image,
+  }));
+
+  await Listing.insertMany(mappedData);
   console.log("data was initialized");
 };
 
